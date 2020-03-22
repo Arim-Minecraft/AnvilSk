@@ -34,10 +34,10 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import net.wesjd.anvilgui.AnvilGUI.Response;
 
-public class ExprAnvilGuiResponse extends SimpleExpression<Response> {
+public class ExprAnvilGuiResponse extends SimpleExpression<String> {
 	
 	static {
-		Skript.registerExpression(ExprAnvilGuiResponse.class, Response.class, ExpressionType.SIMPLE, "[anvilsk] completion response");
+		Skript.registerExpression(ExprAnvilGuiResponse.class, String.class, ExpressionType.SIMPLE, "[anvilsk] completion response");
 	}
 	
 	@Override
@@ -46,8 +46,8 @@ public class ExprAnvilGuiResponse extends SimpleExpression<Response> {
 	}
 	
 	@Override
-	public Class<? extends Response> getReturnType() {
-		return Response.class;
+	public Class<? extends String> getReturnType() {
+		return String.class;
 	}
 	
 	@Override
@@ -66,9 +66,10 @@ public class ExprAnvilGuiResponse extends SimpleExpression<Response> {
 	
 	@Override
 	@Nullable
-	protected Response[] get(Event e) {
+	protected String[] get(Event e) {
 		if (e instanceof AnvilGuiCompleteEvent) {
-			return new Response[] {((AnvilGuiCompleteEvent) e).getResponse()};
+			Response response = ((AnvilGuiCompleteEvent) e).getResponse();
+			return response.equals(Response.close()) ? null : new String[] {response.getText()};
 		}
 		return null;
 	}
@@ -76,7 +77,7 @@ public class ExprAnvilGuiResponse extends SimpleExpression<Response> {
 	@Override
 	public Class<?>[] acceptChange(ChangeMode mode) {
 		if (mode == ChangeMode.SET || mode == ChangeMode.RESET) {
-			return new Class[] {Response.class};
+			return new Class[] {String.class};
 		}
 		return null;
 	}
@@ -84,7 +85,8 @@ public class ExprAnvilGuiResponse extends SimpleExpression<Response> {
 	@Override
 	public void change(Event e, Object[] delta, ChangeMode mode) {
 		if (e instanceof AnvilGuiCompleteEvent) {
-			((AnvilGuiCompleteEvent) e).setResponse((mode == ChangeMode.SET) ? (Response) delta[0] : Response.close());
+			String text = (mode == ChangeMode.SET) ? (String) delta[0] : null;
+			((AnvilGuiCompleteEvent) e).setResponse((text == null) ? Response.close() : Response.text(text));
 		}
 	}
 	
