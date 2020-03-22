@@ -23,6 +23,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
+import ch.njol.skript.classes.ClassInfo;
+import ch.njol.skript.classes.Parser;
+import ch.njol.skript.registrations.Classes;
+import net.wesjd.anvilgui.AnvilGUI;
+import net.wesjd.anvilgui.AnvilGUI.Response;
 
 public class AnvilSkPlugin extends JavaPlugin {
 
@@ -43,6 +48,29 @@ public class AnvilSkPlugin extends JavaPlugin {
 			return false;
 		}
 		SkriptAddon addon = Skript.registerAddon(this);
+		Classes.registerClass(new ClassInfo<Response>(Response.class, "anvil response")
+				.name("Anvil Gui Response").defaultExpression(null)
+				.parser(new Parser<Response>() {
+					
+					@Override
+					public String toString(Response o, int flags) {
+						return toVariableNameString(o);
+					}
+					
+					@Override
+					public String toVariableNameString(Response o) {
+						if (o.equals(AnvilGUI.Response.close())) {
+							return "anvilresponse:close";
+						}
+						return "anvilresponse:text=" + o.getText();
+					}
+					
+					@Override
+					public String getVariableNamePattern() {
+						return "anvilresponse:.+";
+					}
+					
+				}));
 		addon.loadClasses("space.arim.anvilsk.syntax", "eff", "evt", "expr");
 		return true;
 	}
