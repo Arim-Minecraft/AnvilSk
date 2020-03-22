@@ -5,7 +5,7 @@
 	
 	<groupId>space.arim</groupId>
 	<artifactId>anvilsk</artifactId>
-	<version>0.1.1</version>
+	<version>0.1.2</version>
 	
 	<name>AnvilSK</name>
 	<description>A Skript addon to add anvil GUIs</description>
