@@ -86,7 +86,7 @@ public class ExprAnvilGuiResponse extends SimpleExpression<String> {
 	public void change(Event e, Object[] delta, ChangeMode mode) {
 		if (e instanceof AnvilGuiCompleteEvent) {
 			String text = (mode == ChangeMode.SET) ? (String) delta[0] : null;
-			((AnvilGuiCompleteEvent) e).setResponse((text == null) ? Response.close() : Response.text(text));
+			((AnvilGuiCompleteEvent) e).setResponse(Response.text(text));
 		}
 	}
 	
