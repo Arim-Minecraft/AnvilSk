@@ -68,20 +68,25 @@ public class EffMakeAnvilGui extends Effect {
 	
 	@Override
 	protected void execute(Event e) {
-		final String id = identifier.getSingle(e);
+		String id = identifier.getSingle(e);
 		AnvilGUI.Builder builder = new AnvilGUI.Builder();
 		
 		builder.plugin(AnvilSkPlugin.inst()).text(text.getSingle(e)).title(title.getSingle(e)).item(item.getSingle(e)).onComplete((player, text) -> {
 			AnvilGuiCompleteEvent evt = new AnvilGuiCompleteEvent(id, player, text);
 			Bukkit.getServer().getPluginManager().callEvent(evt);
 			return evt.getResponse();
-		}).onClose((player) -> {
-			Bukkit.getServer().getPluginManager().callEvent(new AnvilGuiCloseEvent(id, player));
 		});
 		if (preventClose.getSingle(e)) {
-			builder.preventClose();
+			builder.onClose((player) -> {
+				AnvilSkPlugin.inst().cleanup(player, id);
+			}).preventClose();
+		} else {
+			builder.onClose((player) -> {
+				AnvilSkPlugin.inst().cleanup(player, id);
+				Bukkit.getServer().getPluginManager().callEvent(new AnvilGuiCloseEvent(id, player));
+			});
 		}
-		builder.open(player.getSingle(e));
+		AnvilSkPlugin.inst().openGui(player.getSingle(e), id, builder);
 	}
 
 }

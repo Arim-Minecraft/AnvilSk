@@ -19,14 +19,22 @@
 package space.arim.anvilsk;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
+import net.wesjd.anvilgui.AnvilGUI;
 
 public class AnvilSkPlugin extends JavaPlugin {
 
 	private static AnvilSkPlugin inst;
+	
+	private Map<String, Map<UUID, AnvilGUI>> guis = new HashMap<String, Map<UUID, AnvilGUI>>();
 	
 	private void error(String reason, Exception cause) {
 		getLogger().severe("**ERROR**: Unable to load NPCSk's features! Reason: " + reason + ". Shutting down...");
@@ -58,6 +66,28 @@ public class AnvilSkPlugin extends JavaPlugin {
 			error("Could not load syntax classes", ex);
 		} catch (ClassNotFoundException ex) {
 			error("Skript not found", ex);
+		}
+	}
+	
+	public void openGui(Player player, String id, AnvilGUI.Builder builder) {
+		guis.computeIfAbsent(id, (i) -> new HashMap<UUID, AnvilGUI>()).put(player.getUniqueId(),
+				builder.open(player));
+	}
+	
+	public void closeGui(Player player, String id) {
+		Map<UUID, AnvilGUI> subMap = guis.get(id);
+		if (subMap != null) {
+			AnvilGUI gui = subMap.get(player.getUniqueId());
+			if (gui != null) {
+				gui.closeInventory();
+			}
+		}
+	}
+	
+	public void cleanup(Player player, String id) {
+		Map<UUID, AnvilGUI> subMap = guis.get(id);
+		if (subMap != null) {
+			subMap.remove(player.getUniqueId());
 		}
 	}
 	
