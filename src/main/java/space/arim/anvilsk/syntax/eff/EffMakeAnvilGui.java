@@ -77,15 +77,12 @@ public class EffMakeAnvilGui extends Effect {
 			return evt.getResponse();
 		});
 		if (preventClose.getSingle(e)) {
-			builder.onClose((player) -> {
-				AnvilSkPlugin.inst().cleanup(player, id);
-			}).preventClose();
-		} else {
-			builder.onClose((player) -> {
-				AnvilSkPlugin.inst().cleanup(player, id);
-				Bukkit.getServer().getPluginManager().callEvent(new AnvilGuiCloseEvent(id, player));
-			});
+			builder.preventClose();
 		}
+		builder.onClose((player) -> {
+			AnvilSkPlugin.inst().cleanup(player, id);
+			Bukkit.getServer().getPluginManager().callEvent(new AnvilGuiCloseEvent(id, player));
+		});
 		AnvilSkPlugin.inst().openGui(player.getSingle(e), id, builder);
 	}
 
