@@ -33,29 +33,27 @@ import ch.njol.util.Kleenean;
 
 public class EffCloseAnvilGui extends Effect {
 	
-	private Expression<String> id;
 	private Expression<Player> player;
 	
 	static {
-		Skript.registerEffect(EffCloseAnvilGui.class, "[anvilsk] close anvil gui %string% for %player%");
+		Skript.registerEffect(EffCloseAnvilGui.class, "[anvilsk] close anvil gui for %player%");
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
-		id = (Expression<String>) exprs[0];
-		player = (Expression<Player>) exprs[1];
+		player = (Expression<Player>) exprs[0];
 		return true;
 	}
 	
 	@Override
 	public String toString(@Nullable Event e, boolean debug) {
-		return "anvilsk close anvil gui " + id.toString(e, debug) + " for " + player.toString(e, debug);
+		return "anvilsk close anvil gui for " + player.toString(e, debug);
 	}
 	
 	@Override
 	protected void execute(Event e) {
-		AnvilSkPlugin.inst().closeGui(player.getSingle(e), id.getSingle(e));
+		AnvilSkPlugin.inst().closeGui(player.getSingle(e));
 	}
 	
 }

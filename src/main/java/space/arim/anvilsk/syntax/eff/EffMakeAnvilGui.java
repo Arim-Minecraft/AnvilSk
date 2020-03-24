@@ -80,10 +80,10 @@ public class EffMakeAnvilGui extends Effect {
 			builder.preventClose();
 		}
 		builder.onClose((player) -> {
-			AnvilSkPlugin.inst().cleanup(player, id);
+			AnvilSkPlugin.inst().cleanup(player);
 			Bukkit.getServer().getPluginManager().callEvent(new AnvilGuiCloseEvent(id, player));
 		});
-		AnvilSkPlugin.inst().openGui(player.getSingle(e), id, builder);
+		AnvilSkPlugin.inst().openGui(player.getSingle(e), builder);
 	}
 
 }

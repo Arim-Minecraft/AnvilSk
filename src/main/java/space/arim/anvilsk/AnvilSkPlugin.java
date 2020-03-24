@@ -34,7 +34,7 @@ public class AnvilSkPlugin extends JavaPlugin {
 
 	private static AnvilSkPlugin inst;
 	
-	private Map<String, Map<UUID, AnvilGUI>> guis = new HashMap<String, Map<UUID, AnvilGUI>>();
+	private Map<UUID, AnvilGUI> guis = new HashMap<UUID, AnvilGUI>();
 	
 	private void error(String reason, Exception cause) {
 		getLogger().severe("**ERROR**: Unable to load NPCSk's features! Reason: " + reason + ". Shutting down...");
@@ -69,26 +69,20 @@ public class AnvilSkPlugin extends JavaPlugin {
 		}
 	}
 	
-	public void openGui(Player player, String id, AnvilGUI.Builder builder) {
-		guis.computeIfAbsent(id, (i) -> new HashMap<UUID, AnvilGUI>()).put(player.getUniqueId(),
-				builder.open(player));
+	public void openGui(Player player, AnvilGUI.Builder builder) {
+		closeGui(player);
+		guis.put(player.getUniqueId(), builder.open(player));
 	}
 	
-	public void closeGui(Player player, String id) {
-		Map<UUID, AnvilGUI> subMap = guis.get(id);
-		if (subMap != null) {
-			AnvilGUI gui = subMap.get(player.getUniqueId());
-			if (gui != null) {
-				gui.closeInventory();
-			}
+	public void closeGui(Player player) {
+		AnvilGUI existing = guis.remove(player.getUniqueId());
+		if (existing != null) {
+			existing.closeInventory();
 		}
 	}
 	
-	public void cleanup(Player player, String id) {
-		Map<UUID, AnvilGUI> subMap = guis.get(id);
-		if (subMap != null) {
-			subMap.remove(player.getUniqueId());
-		}
+	public void cleanup(Player player) {
+		guis.remove(player.getUniqueId());
 	}
 	
 	public static AnvilSkPlugin inst() {
