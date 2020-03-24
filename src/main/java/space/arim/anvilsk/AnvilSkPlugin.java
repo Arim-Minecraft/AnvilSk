@@ -51,7 +51,7 @@ public class AnvilSkPlugin extends JavaPlugin {
 			return false;
 		}
 		SkriptAddon addon = Skript.registerAddon(this);
-		addon.loadClasses("space.arim.anvilsk.syntax", "eff", "evt", "expr");
+		addon.loadClasses("space.arim.anvilsk.syntax", "cond", "eff", "evt", "expr");
 		return true;
 	}
 	
@@ -72,6 +72,10 @@ public class AnvilSkPlugin extends JavaPlugin {
 	public void openGui(Player player, AnvilGUI.Builder builder) {
 		closeGui(player);
 		guis.put(player.getUniqueId(), builder.open(player));
+	}
+	
+	public boolean hasGui(Player player) {
+		return guis.containsKey(player.getUniqueId());
 	}
 	
 	public void closeGui(Player player) {
