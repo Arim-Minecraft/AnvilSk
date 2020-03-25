@@ -16,7 +16,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<universal.version>0.6.11-SNAPSHOT</universal.version>
+		<universal.version>0.7.0-SNAPSHOT</universal.version>
 		<anvilgui.version>1.3.0</anvilgui.version>
 	</properties>
 	
