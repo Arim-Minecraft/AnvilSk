@@ -37,7 +37,7 @@ public class AnvilSkPlugin extends JavaPlugin {
 	private Map<UUID, AnvilGUI> guis = new HashMap<UUID, AnvilGUI>();
 	
 	private void error(String reason, Exception cause) {
-		getLogger().severe("**ERROR**: Unable to load NPCSk's features! Reason: " + reason + ". Shutting down...");
+		getLogger().severe("**ERROR**: Unable to load features! Reason: " + reason + ". Shutting down...");
 		getServer().getPluginManager().disablePlugin(this);
 		if (cause != null) {
 			cause.printStackTrace();
