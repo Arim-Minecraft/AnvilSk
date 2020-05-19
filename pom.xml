@@ -101,7 +101,7 @@
 						<configuration>
 							<artifactSet>
 								<includes>
-									<include>net.wesjd:anvilgui</include>
+									<include>com.github.WesJD:*</include>
 								</includes>
 							</artifactSet>
 						</configuration>
