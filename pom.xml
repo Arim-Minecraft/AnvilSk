@@ -104,6 +104,12 @@
 									<include>com.github.WesJD:*</include>
 								</includes>
 							</artifactSet>
+							<relocations>
+								<relocation>
+									<pattern>net.wesjd.anvilgui</pattern>
+									<shadedPattern>space.arim.anvilsk.shaded.net.wesjd.anvilgui</shadedPattern>
+								</relocation>
+							</relocations>
 						</configuration>
 					</execution>
 				</executions>
